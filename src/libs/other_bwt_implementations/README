@@ -1,0 +1,23 @@
+
+This directory  contains  earlier  implementations  of  the  BWT.
+Although  impractical  they served the purpose during development
+-- to help me understand how this thing works. It  may  therefore
+be useful for others to examine these files as they don't contain
+any of  the  code  required  for  an  efficient  BWT  that  would
+otherwise distract.
+
+The file named "1.bwt_lib.c"  is  grossly  inefficient  and  even
+moderately sized files would require obscene amounts of memory.
+
+"2.bwt_lib.c" attempts to solve the memory problem by introducing
+an  array  of  pointers that indicate the start of each imaginary
+row in the rotation matrix. However, it is still too  slow.  This
+is due entirely to the memory compare function.
+
+
+
+"4.bwt_lib.c" is a playground for different  sort  routines.  The
+Radix  sort is particularly promising but it is broken for binary
+input -- probably an off-by-one error for characters with a value
+of 0.
+

@@ -1,0 +1,52 @@
+#!/bin/bash
+
+testDir="./text.compression.corpus/*"
+
+for file in $testDir
+do
+	if [ -f $file ]
+	then
+		echo -n "processing" $file
+
+		bin/flick $file
+
+		if [ $? -eq  0 ]
+		then
+			if [ -e $file.flk ]
+			then	
+				echo
+				ls -hs $file
+				ls -hs $file.flk
+				bin/flick -d $file.flk -o $file.unflk
+	
+				if [ -e $file.unflk ]
+    		then
+	      	cmp $file.unflk $file > /dev/null
+					if [ $? -eq 0 ]
+					then
+						echo -en '\033[0;32m'
+						echo "success"
+					else
+						echo -en '\033[0;31m'
+						echo "failure"
+					fi
+					tput sgr0
+	
+					rm $file.unflk
+      	else
+					echo "no unflicked file was produced"
+      	fi
+    		rm $file.flk
+			else
+				echo "no flicked file was produced"
+			fi
+		else
+			# flick failed during compression
+			# check to see if an empty flk file is present
+			if [ -e $file.flk ]
+			then	
+				rm $file.flk
+			fi
+		fi
+	fi
+done
